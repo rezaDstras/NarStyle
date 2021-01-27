@@ -205,7 +205,7 @@ class UserController extends Controller
                     //redirect to login page with success message
                     $message="Your Account has been activated!please login!";
                     Session::flash('success_message',$message);
-                    return redirect('front.user.login');
+                    return view('front.user.login');
             }
 
         }else{
