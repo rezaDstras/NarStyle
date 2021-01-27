@@ -43,15 +43,26 @@ class WishlistController extends Controller
                     $wishlist->save();
                 }
             }else{
-                if (Wishlist::where(['session_id'=>Session::get('session_id'),'product_id'=>$products->id])->get()->count() > 0) {
-                    return response()->json(['wish_fault'=>'exceeded']);
+                if(Session::has('session_id')){
+                    if (Wishlist::where(['session_id'=>Session::get('session_id'),'product_id'=>$products->id])->get()->count() > 0) {
+                        return response()->json(['wish_fault'=>'exceeded']);
+                    }else{
+                        $wishlist=new Wishlist;
+                        $wishlist->product_id=$products['id'];
+                        $wishlist->user_id=0;
+                        $wishlist->session_id=Session::get('session_id');
+                        $wishlist->save();
+                    }
                 }else{
+                    $session_id=Session::getId();
+                    Session::put('session_id',$session_id);
                     $wishlist=new Wishlist;
                     $wishlist->product_id=$products['id'];
                     $wishlist->user_id=0;
-                    $wishlist->session_id=Session::get('session_id');
+                    $wishlist->session_id=$session_id;
                     $wishlist->save();
                 }
+
             }
             return response()->json(['wish_create'=>'success']);
         }
