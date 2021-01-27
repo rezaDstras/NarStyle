@@ -1,5 +1,5 @@
 
-<p align="center"><a href="https://narstyle.ir" target="_blank"><img src="https://narstyle.ir/demo/screen.jpg" width="400"></a></p>
+<p align="center"><a href="https://narstyle.ir" target="_blank"><img src="https://raw.githubusercontent.com/rezaDstras/NarStyle/master/screen.jpg" width="400"></a></p>
 
 Demo : https://narstyle.ir
 
