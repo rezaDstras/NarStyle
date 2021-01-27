@@ -1,0 +1,106 @@
+@extends('layouts.admin.index')
+@section('content')
+    <div class="content-wrapper" style="min-height: 1322.44px;">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Products</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="{{url('/admin/dashboard')}}">Home</a></li>
+                            <li class="breadcrumb-item active">Products</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Product Table</h3>
+                                <a href="{{url('/admin/add-edit-product')}}" class="btn btn-success" style="float: right; max-width: 150px; display: inline-block">Add Product</a>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <div id="categories" class="dataTables_wrapper dt-bootstrap4"><div class="row"><div class="col-sm-12 col-md-6"></div><div class="col-sm-12 col-md-6"></div></div><div class="row"><div class="col-sm-12"><table id="example2" class="table table-bordered table-hover dataTable dtr-inline" role="grid" aria-describedby="example2_info">
+                                                <thead>
+                                                <tr role="row">
+                                                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Name</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Code</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Price</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Color</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Image</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Category</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Section</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Status</th>
+                                                    <th style="width: 13%" class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Actions</th>
+
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($products as $key=>$product)
+                                                    <tr role="row" class="odd">
+                                                        <td>{{$product->product_name}}</td>
+                                                        <td>{{$product->product_code}}</td>
+                                                        <td>{{$product->product_price}}</td>
+                                                        <td>{{$product->product_color}}</td>
+                                                        <td>
+                                                            @if(!empty($product->main_image))
+                                                                <img width="100px" height="100px" src={{asset("/admin/images/product_images/small_image/".$product->main_image)}}>
+                                                            @else
+                                                                <a href="{{url('/admin/add-edit-product/'.$product->product_name )}}"  >set image now</a>
+                                                            @endif
+                                                        </td>
+                                                        <td>{{$product->category->category_name}}</td>
+                                                        <td>{{$product->section->name}}</td>
+                                                        <td>
+                                                            @if($product->status==1)
+                                                                <a class="updateProductStatus" id="product-{{$product->id}}" product_id="{{$product->id}}"
+                                                                   href="javascript:void (0)">
+                                                                    active</a>
+                                                            @elseif($product->status==0)
+                                                                <a class="updateProductStatus" id="product-{{$product->id}}" product_id="{{$product->id}}"
+                                                                   href="javascript:void (0)">
+                                                                    inactive</a>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            <a title="Add Attribute"  href="{{(url('admin/add-attributes/'.$product->id ))}}"><li class="fas fa-plus"></li></a>
+                                                            &nbsp;&nbsp;
+                                                            <a title="Add Images"  href="{{(url('admin/add-images/'.$product->id ))}}"><li class="fas fa-images"></li></a>
+                                                            &nbsp;&nbsp;
+                                                            <a title="Edit Product" class="" href="{{url('admin/add-edit-product/'.$product->product_name )}}"><li class="fas fa-edit"></li></a>
+                                                            &nbsp;&nbsp;
+                                                            <a title="Delete Product" class="confirmDelete" record="product" recordid="{{$product->id}}" href="javascript:void (0)"><li class="fas fa-trash"></li></a>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+@endsection
