@@ -41,15 +41,26 @@ class CompareController extends Controller
                     $compare->save();
                 }
             }else{
-                if (Compare::where(['session_id'=>Session::get('session_id'),'product_id'=>$products->id])->get()->count() > 0) {
-                    return response()->json(['compare_fault'=>'exceeded']);
+                if(Session::has('session_id')){
+                    if (Compare::where(['session_id'=>Session::get('session_id'),'product_id'=>$products->id])->get()->count() > 0) {
+                        return response()->json(['compare_fault'=>'exceeded']);
+                    }else{
+                        $compare=new Compare;
+                        $compare->product_id=$products['id'];
+                        $compare->user_id=0;
+                        $compare->session_id=Session::get('session_id');
+                        $compare->save();
+                    }
                 }else{
+                    $session_id=Session::getId();
+                    Session::put('session_id',$session_id);
                     $compare=new Compare;
                     $compare->product_id=$products['id'];
                     $compare->user_id=0;
-                    $compare->session_id=Session::get('session_id');
+                    $compare->session_id=$session_id;
                     $compare->save();
                 }
+
             }
             return response()->json(['compare_create'=>'success']);
         }
@@ -58,12 +69,5 @@ class CompareController extends Controller
     {
        Compare::where('id',$compare['id'])->delete();
         return redirect()->back();
-
     }
-
-
 }
-
-
-
-
